@@ -1,0 +1,141 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <!-- Metallic Bronze / Gold Gradients -->
+    <radialGradient id="secOuterMedal" cx="50%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#b45309" />
+      <stop offset="60%" stop-color="#78350f" />
+      <stop offset="90%" stop-color="#451a03" />
+      <stop offset="100%" stop-color="#220a03" />
+    </radialGradient>
+    <linearGradient id="secGoldRing" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a" />
+      <stop offset="25%" stop-color="#f59e0b" />
+      <stop offset="50%" stop-color="#d97706" />
+      <stop offset="75%" stop-color="#fbbf24" />
+      <stop offset="100%" stop-color="#78350f" />
+    </linearGradient>
+    <linearGradient id="secShieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ea580c" />
+      <stop offset="40%" stop-color="#c2410c" />
+      <stop offset="100%" stop-color="#9a3412" />
+    </linearGradient>
+    <linearGradient id="sec3DGold" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="20%" stop-color="#fef08a" />
+      <stop offset="50%" stop-color="#f59e0b" />
+      <stop offset="80%" stop-color="#b45309" />
+      <stop offset="100%" stop-color="#78350f" />
+    </linearGradient>
+    <filter id="secDropShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#000000" flood-opacity="0.65" />
+    </filter>
+    <filter id="goldGlow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Base Circle Shadow & Body -->
+  <circle cx="200" cy="200" r="190" fill="url(#secOuterMedal)" filter="url(#secDropShadow)" stroke="url(#secGoldRing)" stroke-width="8" />
+
+  <!-- Outer Ring Inset -->
+  <circle cx="200" cy="200" r="172" fill="none" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4,3" opacity="0.85" />
+  <circle cx="200" cy="200" r="142" fill="#2d0f04" stroke="url(#secGoldRing)" stroke-width="4" />
+
+  <!-- Circular Text Path for CUE COLLEGE STUDENT EXECUTIVE COUNCIL -->
+  <path id="textCircleTop" d="M 45 200 A 155 155 0 0 1 355 200" fill="none" />
+  <path id="textCircleBottom" d="M 355 200 A 155 155 0 0 1 45 200" fill="none" />
+
+  <text font-family="'Outfit', Arial, sans-serif" font-size="14.5" font-weight="900" fill="#fef08a" letter-spacing="3.2" filter="url(#goldGlow)">
+    <textPath href="#textCircleTop" startOffset="50%" text-anchor="middle">
+      CUE COLLEGE
+    </textPath>
+  </text>
+
+  <text font-family="'Outfit', Arial, sans-serif" font-size="12" font-weight="900" fill="#fde047" letter-spacing="2.6">
+    <textPath href="#textCircleBottom" startOffset="50%" text-anchor="middle">
+      ★ STUDENT EXECUTIVE COUNCIL ★
+    </textPath>
+  </text>
+
+  <!-- Golden Laurel Wreath Leaves (Left and Right sides) -->
+  <g fill="url(#secGoldRing)" stroke="#78350f" stroke-width="0.8">
+    <!-- Left Wreath -->
+    <path d="M 95 190 C 80 170 85 140 105 135 C 105 145 95 170 95 190 Z" />
+    <path d="M 88 215 C 75 200 75 175 92 165 C 93 175 88 198 88 215 Z" />
+    <path d="M 90 245 C 78 235 76 210 90 200 C 93 212 90 230 90 245 Z" />
+    <path d="M 102 275 C 88 268 85 245 98 232 C 103 245 102 262 102 275 Z" />
+    <path d="M 122 300 C 108 295 102 275 115 260 C 120 272 122 288 122 300 Z" />
+    <path d="M 148 318 C 132 315 125 298 138 282 C 143 294 148 308 148 318 Z" />
+    <!-- Left Branch Stem -->
+    <path d="M 90 145 C 75 200 100 295 170 330" fill="none" stroke="url(#secGoldRing)" stroke-width="3" />
+
+    <!-- Right Wreath -->
+    <path d="M 305 190 C 320 170 315 140 295 135 C 295 145 305 170 305 190 Z" />
+    <path d="M 312 215 C 325 200 325 175 308 165 C 307 175 312 198 312 215 Z" />
+    <path d="M 310 245 C 322 235 324 210 310 200 C 307 212 310 230 310 245 Z" />
+    <path d="M 298 275 C 312 268 315 245 302 232 C 297 245 298 262 298 275 Z" />
+    <path d="M 278 300 C 292 295 298 275 285 260 C 280 272 278 288 278 300 Z" />
+    <path d="M 252 318 C 268 315 275 298 262 282 C 257 294 252 308 252 318 Z" />
+    <!-- Right Branch Stem -->
+    <path d="M 310 145 C 325 200 300 295 230 330" fill="none" stroke="url(#secGoldRing)" stroke-width="3" />
+  </g>
+
+  <!-- Big 3D Bold "SEC" Lettering at Top of Medallion -->
+  <!-- Shadow offset -->
+  <text x="202" y="142" text-anchor="middle" font-family="'Outfit', Arial Black, sans-serif" font-weight="900" font-size="44" fill="#180702" letter-spacing="6">
+    SEC
+  </text>
+  <!-- Main 3D Text -->
+  <text x="200" y="140" text-anchor="middle" font-family="'Outfit', Arial Black, sans-serif" font-weight="900" font-size="44" fill="url(#sec3DGold)" stroke="#78350f" stroke-width="2" letter-spacing="6" filter="url(#goldGlow)">
+    SEC
+  </text>
+
+  <!-- Central Crest Shield -->
+  <path d="M 200 155 
+           L 255 170 
+           L 250 245 
+           C 245 280, 200 305, 200 305 
+           C 200 305, 155 280, 150 245 
+           L 145 170 Z" 
+        fill="url(#secShieldGrad)" 
+        stroke="url(#secGoldRing)" 
+        stroke-width="3.5" 
+        filter="url(#secDropShadow)" />
+
+  <!-- Inner Scales of Justice / Balance (Justice, Equity, Student Rights) -->
+  <g transform="translate(200, 222) scale(0.9)">
+    <!-- Central Pillar / Torch -->
+    <rect x="-3" y="-36" width="6" height="42" fill="#fef08a" rx="1.5" />
+    <polygon points="-6,-36 0,-48 6,-36" fill="#f59e0b" />
+    <!-- Flame on torch tip -->
+    <path d="M 0 -48 Q -8 -60 0 -70 Q 8 -60 0 -48 Z" fill="#fde047" stroke="#ea580c" stroke-width="1.5" />
+    <circle cx="0" cy="-56" r="3" fill="#ffffff" />
+
+    <!-- Crossbeam -->
+    <rect x="-36" y="-30" width="72" height="4" rx="2" fill="url(#sec3DGold)" stroke="#78350f" stroke-width="0.8" />
+    <circle cx="0" cy="-28" r="4" fill="#fde047" />
+
+    <!-- Left Pan -->
+    <line x1="-32" y1="-28" x2="-44" y2="-8" stroke="#fef08a" stroke-width="1.5" />
+    <line x1="-32" y1="-28" x2="-20" y2="-8" stroke="#fef08a" stroke-width="1.5" />
+    <path d="M -48 -8 Q -32 2 -16 -8 Z" fill="url(#sec3DGold)" stroke="#78350f" stroke-width="1" />
+
+    <!-- Right Pan -->
+    <line x1="32" y1="-28" x2="20" y2="-8" stroke="#fef08a" stroke-width="1.5" />
+    <line x1="32" y1="-28" x2="44" y2="-8" stroke="#fef08a" stroke-width="1.5" />
+    <path d="M 16 -8 Q 32 2 48 -8 Z" fill="url(#sec3DGold)" stroke="#78350f" stroke-width="1" />
+
+    <!-- Base Pedestal -->
+    <path d="M -16 6 L 16 6 L 22 14 L -22 14 Z" fill="url(#sec3DGold)" stroke="#78350f" stroke-width="1" />
+  </g>
+
+  <!-- Official Seal Year Ribbon -->
+  <rect x="145" y="325" width="110" height="20" rx="4" fill="#78350f" stroke="#f59e0b" stroke-width="1" />
+  <text x="200" y="339" text-anchor="middle" font-family="'Outfit', Arial, sans-serif" font-weight="900" font-size="10.5" fill="#fde047" letter-spacing="2">
+    OFFICIAL SEAL
+  </text>
+</svg>

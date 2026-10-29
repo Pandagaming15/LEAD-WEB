@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 440" width="100%" height="100%">
+  <defs>
+    <linearGradient id="schoolShieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ea580c" />
+      <stop offset="50%" stop-color="#c2410c" />
+      <stop offset="100%" stop-color="#7c2d12" />
+    </linearGradient>
+    <linearGradient id="goldTrimGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a" />
+      <stop offset="35%" stop-color="#f59e0b" />
+      <stop offset="70%" stop-color="#d97706" />
+      <stop offset="100%" stop-color="#78350f" />
+    </linearGradient>
+    <linearGradient id="innerShieldGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fff7ed" />
+      <stop offset="15%" stop-color="#ffedd5" />
+      <stop offset="100%" stop-color="#fed7aa" />
+    </linearGradient>
+    <linearGradient id="bannerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#7c2d12" />
+      <stop offset="30%" stop-color="#c2410c" />
+      <stop offset="50%" stop-color="#ea580c" />
+      <stop offset="70%" stop-color="#c2410c" />
+      <stop offset="100%" stop-color="#7c2d12" />
+    </linearGradient>
+    <filter id="schoolShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#000000" flood-opacity="0.6" />
+    </filter>
+  </defs>
+
+  <!-- Outer Shield Outer Contour -->
+  <path d="M 200 15 
+           C 320 15, 370 25, 375 75 
+           C 380 230, 310 350, 200 425 
+           C 90 350, 20 230, 25 75 
+           C 30 25, 80 15, 200 15 Z" 
+        fill="url(#goldTrimGrad)" 
+        filter="url(#schoolShadow)" />
+
+  <!-- Outer Shield Core (Orange) -->
+  <path d="M 200 24 
+           C 310 24, 355 33, 360 80 
+           C 365 224, 300 338, 200 410 
+           C 100 338, 35 224, 40 80 
+           C 45 33, 90 24, 200 24 Z" 
+        fill="url(#schoolShieldGrad)" 
+        stroke="#fde047" stroke-width="2" />
+
+  <!-- Inner Shield (Parchment/Light Cream) -->
+  <path d="M 200 42 
+           C 295 42, 335 50, 340 92 
+           C 345 215, 285 320, 200 385 
+           C 115 320, 55 215, 60 92 
+           C 65 50, 105 42, 200 42 Z" 
+        fill="url(#innerShieldGrad)" 
+        stroke="#b45309" stroke-width="3" />
+
+  <!-- Top Ribbon Banner: CENTRAL QUEZON EDUCATIONAL ENDOWMENT INC. -->
+  <path d="M 70 85 L 330 85 L 320 120 L 80 120 Z" fill="url(#bannerGrad)" stroke="#fef08a" stroke-width="1.5" />
+  <text x="200" y="103" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="11" fill="#ffffff" letter-spacing="1.2">
+    CENTRAL QUEZON EDUCATIONAL ENDOWMENT INC.
+  </text>
+  <text x="200" y="115" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="800" font-size="9" fill="#fef08a" letter-spacing="2">
+    QUEZON, PHILIPPINES
+  </text>
+
+  <!-- Big Bold CUE COLLEGE / CQEE Banner -->
+  <rect x="75" y="128" width="250" height="34" rx="6" fill="#7c2d12" stroke="#f59e0b" stroke-width="1.5" />
+  <text x="200" y="152" text-anchor="middle" font-family="'Outfit', Arial, sans-serif" font-weight="900" font-size="20" fill="#fff" letter-spacing="3">
+    CUE COLLEGE
+  </text>
+
+  <!-- Central Graphic: Running Student / Professional with Briefcase & Tie -->
+  <!-- Dynamic Scholar Figure -->
+  <g transform="translate(145, 175) scale(0.72)">
+    <!-- Head -->
+    <circle cx="75" cy="22" r="16" fill="#c2410c" />
+    <!-- Graduation Cap on head -->
+    <polygon points="75,0 102,12 75,18 48,12" fill="#7c2d12" />
+    <polygon points="75,18 95,14 95,20 75,24" fill="#9a3412" />
+    <path d="M 98 14 Q 106 20 104 32" stroke="#f59e0b" stroke-width="2.5" fill="none" />
+    <circle cx="104" cy="33" r="3" fill="#f59e0b" />
+
+    <!-- Torso in Suit with White Collar and Necktie -->
+    <path d="M 60 42 L 90 42 L 85 95 L 55 95 Z" fill="#ea580c" />
+    <!-- White shirt collar -->
+    <polygon points="70,42 75,54 80,42" fill="#ffffff" />
+    <!-- Flowing necktie -->
+    <polygon points="74,52 76,52 79,72 75,82 72,72" fill="#fff" opacity="0.95" />
+
+    <!-- Leading Left Arm reaching forward -->
+    <path d="M 85 45 Q 115 50 125 40 Q 130 45 120 56 Q 105 58 80 56 Z" fill="#c2410c" />
+
+    <!-- Trailing Right Arm holding Briefcase -->
+    <path d="M 60 48 Q 40 55 25 72 Q 22 76 28 80 Q 45 68 62 58 Z" fill="#9a3412" />
+    <!-- Briefcase Handle -->
+    <path d="M 12 72 Q 18 64 24 72" stroke="#78350f" stroke-width="3" fill="none" />
+    <!-- Briefcase Body -->
+    <rect x="2" y="72" width="32" height="24" rx="3" fill="#78350f" stroke="#f59e0b" stroke-width="1.5" />
+    <line x1="2" y1="84" x2="34" y2="84" stroke="#f59e0b" stroke-width="1" />
+    <rect x="15" y="81" width="6" height="5" rx="1" fill="#fef08a" />
+
+    <!-- Leading Right Leg sprinting forward -->
+    <path d="M 75 92 Q 105 110 125 130 Q 135 142 125 148 Q 110 142 90 120 Q 75 105 70 95 Z" fill="#c2410c" />
+    <!-- Leading Foot / Shoe -->
+    <path d="M 125 145 L 148 148 L 146 156 L 122 153 Z" fill="#431407" />
+
+    <!-- Trailing Left Leg bent backward in full sprint -->
+    <path d="M 60 92 Q 40 115 15 125 Q 5 128 5 135 Q 15 138 32 130 Q 55 115 65 95 Z" fill="#9a3412" />
+    <!-- Trailing Foot / Shoe -->
+    <path d="M 5 133 L -10 142 L -12 148 L 5 141 Z" fill="#431407" />
+  </g>
+
+  <!-- Open Book of Knowledge & Learning -->
+  <g transform="translate(150, 312)">
+    <!-- Book Pages -->
+    <path d="M 50 15 Q 25 2 0 10 L 0 35 Q 25 28 50 40 Q 75 28 100 35 L 100 10 Q 75 2 50 15 Z" fill="#ffffff" stroke="#9a3412" stroke-width="1.5" />
+    <path d="M 50 15 L 50 40" stroke="#9a3412" stroke-width="2" />
+    <line x1="8" y1="18" x2="42" y2="23" stroke="#ea580c" stroke-width="1" stroke-dasharray="3,2" />
+    <line x1="8" y1="24" x2="42" y2="29" stroke="#ea580c" stroke-width="1" stroke-dasharray="3,2" />
+    <line x1="58" y1="23" x2="92" y2="18" stroke="#ea580c" stroke-width="1" stroke-dasharray="3,2" />
+    <line x1="58" y1="29" x2="92" y2="24" stroke="#ea580c" stroke-width="1" stroke-dasharray="3,2" />
+  </g>
+
+  <!-- Foundation & Quality Education Star Banner -->
+  <path d="M 120 368 L 280 368 L 270 392 L 130 392 Z" fill="#7c2d12" stroke="#f59e0b" stroke-width="1" />
+  <text x="200" y="384" text-anchor="middle" font-family="Arial, sans-serif" font-weight="900" font-size="11" fill="#fde047" letter-spacing="2">
+    ★ EXCELLENCE IN ACTION ★
+  </text>
+</svg>

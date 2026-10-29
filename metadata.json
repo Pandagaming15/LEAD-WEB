@@ -1,0 +1,8 @@
+{
+  "name": "Remix LEAD Partylist - Student Executive Council Campaign",
+  "description": "Official campaign website of LEAD Partylist (Leaders Engaged in Action and Dedication) featuring candidate pubmat, platforms, interactive sample ballot, campaign jingle player, and student pledge wall.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
