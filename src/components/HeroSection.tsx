@@ -1,5 +1,5 @@
-import React from 'react';
-import { Users, Layers, GraduationCap, MapPin, ArrowRight, CheckCircle2, Flame, Vote, Sparkles } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Users, Layers, GraduationCap, MapPin, ArrowRight, CheckCircle2, Flame, Vote, Sparkles, Music2 } from 'lucide-react';
 import { CAMPAIGN_SETTINGS } from '../data/campaignData';
 
 interface HeroSectionProps {
@@ -8,6 +8,16 @@ interface HeroSectionProps {
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBallotModal, onExploreCandidates }) => {
+  const [isPlayingJingle, setIsPlayingJingle] = useState(false);
+
+  useEffect(() => {
+    const handleState = (e: Event) => {
+      const customEvent = e as CustomEvent<{ isPlaying: boolean }>;
+      setIsPlayingJingle(customEvent.detail?.isPlaying ?? false);
+    };
+    window.addEventListener('lead-jingle-state', handleState);
+    return () => window.removeEventListener('lead-jingle-state', handleState);
+  }, []);
   return (
     <section className="relative w-full max-w-full overflow-hidden bg-[#160602] text-white">
       
@@ -18,6 +28,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBallotModal, onE
         <img
           src={CAMPAIGN_SETTINGS.pubmatBannerSrc}
           alt="LEAD Partylist Official Candidates Cover Photo"
+          fetchPriority="high"
+          decoding="async"
           className="w-full h-full object-cover object-top sm:object-[center_12%] transition-transform duration-500 hover:scale-[1.01]"
         />
 
@@ -85,19 +97,47 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenBallotModal, onE
 
           </div>
 
-          {/* Right: Primary Page Action Buttons (Vote & Explore) */}
-          <div className="flex flex-col xs:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 shrink-0 lg:self-end">
+          {/* Right: Primary Page Action Buttons (Vote, Jingle & Explore) */}
+          <div className="flex flex-col xs:flex-row items-stretch sm:items-center gap-2 sm:gap-2.5 shrink-0 lg:self-end flex-wrap">
             <button
               onClick={onOpenBallotModal}
-              className="px-5 py-2.5 sm:px-6 sm:py-3 rounded-xl bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-500 hover:to-orange-500 text-white font-bold text-xs sm:text-sm transition shadow-lg shadow-orange-950/70 flex items-center justify-center gap-2 cursor-pointer active:scale-95 border border-orange-400/40"
+              className="px-4 py-2.5 sm:px-5 sm:py-3 rounded-xl bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-500 hover:to-orange-500 text-white font-bold text-xs sm:text-sm transition shadow-lg shadow-orange-950/70 flex items-center justify-center gap-2 cursor-pointer active:scale-95 border border-orange-400/40"
             >
               <Vote className="w-4 h-4 text-white" />
               <span>Vote Straight LEAD</span>
             </button>
 
+            {/* Campaign Jingle Trigger Button */}
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new CustomEvent('lead-jingle-toggle'))}
+              className={`px-3.5 py-2.5 sm:px-4 sm:py-3 rounded-xl font-bold text-xs sm:text-sm transition flex items-center justify-center gap-2 cursor-pointer active:scale-95 border ${
+                isPlayingJingle
+                  ? 'bg-orange-950/90 hover:bg-orange-900 border-orange-500/60 text-amber-300 shadow-md'
+                  : 'bg-[#2e1005] hover:bg-[#3f1607] text-amber-200 hover:text-white border-amber-500/50 shadow-md'
+              }`}
+              title={isPlayingJingle ? 'Pause Campaign Song' : 'Play Official Campaign Song'}
+            >
+              {isPlayingJingle ? (
+                <>
+                  <div className="flex items-end gap-0.5 h-3.5 w-3.5" aria-hidden="true">
+                    <span className="w-0.5 bg-amber-400 rounded-full animate-pulse h-2" />
+                    <span className="w-0.5 bg-orange-400 rounded-full animate-pulse h-3.5 delay-75" />
+                    <span className="w-0.5 bg-amber-300 rounded-full animate-pulse h-2.5 delay-150" />
+                  </div>
+                  <span>Song Playing 🎵</span>
+                </>
+              ) : (
+                <>
+                  <Music2 className="w-4 h-4 text-amber-400" />
+                  <span>Play Jingle 🎵</span>
+                </>
+              )}
+            </button>
+
             <button
               onClick={onExploreCandidates}
-              className="px-5 py-2.5 sm:px-6 sm:py-3 rounded-xl bg-[#220a03] hover:bg-[#300e05] text-neutral-200 hover:text-white font-semibold text-xs sm:text-sm border border-neutral-700 hover:border-orange-500/50 transition flex items-center justify-center gap-2 cursor-pointer active:scale-95 group"
+              className="px-4 py-2.5 sm:px-5 sm:py-3 rounded-xl bg-[#220a03] hover:bg-[#300e05] text-neutral-200 hover:text-white font-semibold text-xs sm:text-sm border border-neutral-700 hover:border-orange-500/50 transition flex items-center justify-center gap-2 cursor-pointer active:scale-95 group"
             >
               <span>Explore Candidates</span>
               <ArrowRight className="w-4 h-4 text-neutral-400 group-hover:text-white group-hover:translate-x-0.5 transition-transform" />

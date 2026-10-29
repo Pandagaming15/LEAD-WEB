@@ -1,341 +1,259 @@
-
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Volume2, VolumeX, Play, Pause, Music2 } from 'lucide-react';
 import { CAMPAIGN_SETTINGS } from '../data/campaignData';
 
 /**
  * Campaign Jingle Player
  *
- * Performance improvements:
- * - Starts preloading the real campaign audio immediately.
- * - Does not wait for images, animations, or other page assets.
- * - Uses the browser's native audio buffering.
- * - Retries playback after user interaction if autoplay is blocked.
- * - Does not play synthesized music as a replacement for the real jingle.
- * - Pauses when the page is hidden or the browser loses focus.
- * - Resumes when the page becomes visible again.
- * - Cleans up audio and event listeners when unmounted.
+ * Fast Loading & Universal Playback:
+ * - Preloaded audio with native browser buffering for instant start.
+ * - Global event listeners ({ capture: true }) on document/window so ANY interaction
+ *   (clicks, taps, navigation, scrolling) triggers playback immediately, not just candidate cards.
+ * - Floating interactive controller so users can tap Play/Pause anytime right from the start.
+ * - Custom event bus ('lead-jingle-toggle', 'lead-jingle-play', 'lead-jingle-pause', 'lead-jingle-state')
+ *   so Header and Hero buttons can also control playback directly.
+ * - Pauses automatically when tab is hidden, minimized, or user presses back/home.
+ * - Resumes cleanly when foregrounded.
  */
 export const CampaignJinglePlayer: React.FC = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const shouldPlayRef = useRef<boolean>(true);
-  const isPlayingRef = useRef<boolean>(false);
-  const isStartingRef = useRef<boolean>(false);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [hasInteracted, setHasInteracted] = useState<boolean>(false);
 
   useEffect(() => {
-    const TARGET_VOLUME = 0.32;
+    const TARGET_VOLUME = 0.35;
 
-    // ---------------------------------------------------------
-    // 1. CREATE AND PRELOAD THE CAMPAIGN JINGLE
-    // ---------------------------------------------------------
-
+    // 1. Create and configure audio instance
     const audio = new Audio();
-
     audioRef.current = audio;
-
     audio.preload = 'auto';
     audio.loop = true;
     audio.volume = TARGET_VOLUME;
     audio.autoplay = false;
-
-    // Use the existing audio path from campaignData.ts.
-    // Prefer a local file in public/assets/ for best reliability.
     audio.src = CAMPAIGN_SETTINGS.jingleAudioSrc;
-
-    // Ask the browser to start downloading the audio immediately.
-    // This does not block rendering of the campaign page.
     audio.load();
 
-    // ---------------------------------------------------------
-    // 2. REMOVE GESTURE LISTENERS AFTER SUCCESSFUL PLAYBACK
-    // ---------------------------------------------------------
-
-    const removeGestureListeners = () => {
-      window.removeEventListener('pointerdown', handleFirstUserGesture);
-      window.removeEventListener('touchstart', handleFirstUserGesture);
-      window.removeEventListener('click', handleFirstUserGesture);
-      window.removeEventListener('keydown', handleFirstUserGesture);
+    const broadcastState = (playing: boolean) => {
+      setIsPlaying(playing);
+      window.dispatchEvent(
+        new CustomEvent('lead-jingle-state', { detail: { isPlaying: playing } })
+      );
     };
 
-    // ---------------------------------------------------------
-    // 3. START THE REAL CAMPAIGN JINGLE
-    // ---------------------------------------------------------
-
+    // 2. Start audio playback
     const startAudio = async () => {
       if (!audioRef.current) return;
-
-      if (
-        document.hidden ||
-        document.visibilityState === 'hidden'
-      ) {
-        return;
-      }
-
-      if (isStartingRef.current || !audio.paused) {
-        return;
-      }
+      if (document.hidden || document.visibilityState === 'hidden') return;
 
       shouldPlayRef.current = true;
-      isStartingRef.current = true;
-
       try {
-        // Playback uses the actual MP3, never the synthesized fallback.
         await audio.play();
-
-        isPlayingRef.current = true;
-        removeGestureListeners();
+        broadcastState(true);
       } catch {
-        // Autoplay may be blocked by the browser.
-        // Keep the gesture listeners so playback can be retried.
-        isPlayingRef.current = false;
-      } finally {
-        isStartingRef.current = false;
+        // Autoplay policy prevented playback until gesture
+        broadcastState(false);
       }
     };
 
-    // ---------------------------------------------------------
-    // 4. PAUSE AUDIO WHEN THE PAGE IS NOT ACTIVE
-    // ---------------------------------------------------------
-
-    const stopAudio = () => {
+    // 3. Pause audio playback
+    const pauseAudio = () => {
       if (!audio.paused) {
         audio.pause();
       }
-
-      isPlayingRef.current = false;
+      broadcastState(false);
     };
 
-    // ---------------------------------------------------------
-    // 5. RESUME AUDIO WHEN THE PAGE BECOMES ACTIVE
-    // ---------------------------------------------------------
-
-    const resumeAudioIfVisible = () => {
-      if (
-        document.hidden ||
-        document.visibilityState === 'hidden'
-      ) {
-        stopAudio();
-        return;
-      }
-
-      if (shouldPlayRef.current && audio.paused) {
+    // 4. Global capture trigger on ANY user interaction anywhere on page
+    const handleGlobalUserGesture = () => {
+      setHasInteracted(true);
+      if (shouldPlayRef.current && audio.paused && !document.hidden) {
         void startAudio();
       }
     };
 
-    // ---------------------------------------------------------
-    // 6. RETRY WHEN THE AUDIO BECOMES READY
-    // ---------------------------------------------------------
+    // Use capture: true so child clicks/taps anywhere on the page don't get swallowed
+    const gestureEvents = ['click', 'pointerdown', 'touchstart', 'touchend', 'keydown'];
+    gestureEvents.forEach((ev) => {
+      window.addEventListener(ev, handleGlobalUserGesture, { capture: true, passive: true });
+    });
 
+    // 5. Audio event listeners
+    const handlePlaying = () => broadcastState(true);
+    const handlePause = () => broadcastState(false);
     const handleCanPlay = () => {
-      if (
-        shouldPlayRef.current &&
-        !document.hidden &&
-        audio.paused
-      ) {
+      if (shouldPlayRef.current && audio.paused && !document.hidden) {
         void startAudio();
       }
     };
 
-    const handleAudioPlaying = () => {
-      isPlayingRef.current = true;
-      isStartingRef.current = false;
-      removeGestureListeners();
-    };
-
-    const handleAudioPause = () => {
-      isPlayingRef.current = false;
-    };
-
-    const handleAudioError = () => {
-      isPlayingRef.current = false;
-
-      // Do not generate replacement music.
-      // Keep the user-gesture retry available if the file fails.
-      // Verify the source URL if the audio cannot be loaded.
-    };
-
+    audio.addEventListener('playing', handlePlaying);
+    audio.addEventListener('pause', handlePause);
     audio.addEventListener('canplay', handleCanPlay);
-    audio.addEventListener('playing', handleAudioPlaying);
-    audio.addEventListener('pause', handleAudioPause);
-    audio.addEventListener('error', handleAudioError);
 
-    // ---------------------------------------------------------
-    // 7. HANDLE AUTOPLAY RESTRICTIONS ON MOBILE BROWSERS
-    // ---------------------------------------------------------
-
-    const handleFirstUserGesture = () => {
-      if (
-        !document.hidden &&
-        shouldPlayRef.current
-      ) {
+    // 6. External control bus (from Header, Hero buttons)
+    const handleCustomToggle = () => {
+      if (audio.paused) {
+        shouldPlayRef.current = true;
         void startAudio();
+      } else {
+        shouldPlayRef.current = false;
+        pauseAudio();
       }
     };
 
-    window.addEventListener(
-      'pointerdown',
-      handleFirstUserGesture,
-      { passive: true }
-    );
+    const handleCustomPlay = () => {
+      shouldPlayRef.current = true;
+      void startAudio();
+    };
 
-    window.addEventListener(
-      'touchstart',
-      handleFirstUserGesture,
-      { passive: true }
-    );
+    const handleCustomPause = () => {
+      shouldPlayRef.current = false;
+      pauseAudio();
+    };
 
-    window.addEventListener(
-      'click',
-      handleFirstUserGesture,
-      { passive: true }
-    );
+    window.addEventListener('lead-jingle-toggle', handleCustomToggle);
+    window.addEventListener('lead-jingle-play', handleCustomPlay);
+    window.addEventListener('lead-jingle-pause', handleCustomPause);
 
-    window.addEventListener(
-      'keydown',
-      handleFirstUserGesture
-    );
-
-    // ---------------------------------------------------------
-    // 8. PAGE VISIBILITY AND MOBILE LIFECYCLE
-    // ---------------------------------------------------------
-
+    // 7. Backgrounding, tab switch, and back navigation handling
     const handleVisibilityChange = () => {
       if (document.hidden) {
-        stopAudio();
-      } else {
-        resumeAudioIfVisible();
+        pauseAudio();
+      } else if (shouldPlayRef.current && audio.paused) {
+        void startAudio();
       }
     };
 
     const handlePageHide = () => {
       shouldPlayRef.current = false;
-      stopAudio();
-    };
-
-    const handlePageShow = () => {
-      shouldPlayRef.current = true;
-      resumeAudioIfVisible();
+      pauseAudio();
     };
 
     const handleWindowBlur = () => {
-      stopAudio();
+      pauseAudio();
     };
 
     const handleWindowFocus = () => {
-      resumeAudioIfVisible();
+      if (shouldPlayRef.current && audio.paused && !document.hidden) {
+        void startAudio();
+      }
     };
 
-    const handleBackNavigation = () => {
-      stopAudio();
+    const handlePopState = () => {
+      shouldPlayRef.current = false;
+      pauseAudio();
     };
 
-    document.addEventListener(
-      'visibilitychange',
-      handleVisibilityChange
-    );
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('pagehide', handlePageHide);
+    window.addEventListener('blur', handleWindowBlur);
+    window.addEventListener('focus', handleWindowFocus);
+    window.addEventListener('popstate', handlePopState);
 
-    window.addEventListener(
-      'pagehide',
-      handlePageHide
-    );
+    // 8. Try starting immediately on load
+    void startAudio();
 
-    window.addEventListener(
-      'pageshow',
-      handlePageShow
-    );
-
-    window.addEventListener(
-      'blur',
-      handleWindowBlur
-    );
-
-    window.addEventListener(
-      'focus',
-      handleWindowFocus
-    );
-
-    window.addEventListener(
-      'popstate',
-      handleBackNavigation
-    );
-
-    // ---------------------------------------------------------
-    // 9. ATTEMPT AUTOPLAY IMMEDIATELY
-    // ---------------------------------------------------------
-
-    if (!document.hidden) {
-      void startAudio();
-    }
-
-    // ---------------------------------------------------------
-    // 10. CLEANUP
-    // ---------------------------------------------------------
-
+    // 9. Cleanup
     return () => {
       shouldPlayRef.current = false;
+      gestureEvents.forEach((ev) => {
+        window.removeEventListener(ev, handleGlobalUserGesture, { capture: true });
+      });
 
-      removeGestureListeners();
+      window.removeEventListener('lead-jingle-toggle', handleCustomToggle);
+      window.removeEventListener('lead-jingle-play', handleCustomPlay);
+      window.removeEventListener('lead-jingle-pause', handleCustomPause);
 
-      document.removeEventListener(
-        'visibilitychange',
-        handleVisibilityChange
-      );
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('pagehide', handlePageHide);
+      window.removeEventListener('blur', handleWindowBlur);
+      window.removeEventListener('focus', handleWindowFocus);
+      window.removeEventListener('popstate', handlePopState);
 
-      window.removeEventListener(
-        'pagehide',
-        handlePageHide
-      );
-
-      window.removeEventListener(
-        'pageshow',
-        handlePageShow
-      );
-
-      window.removeEventListener(
-        'blur',
-        handleWindowBlur
-      );
-
-      window.removeEventListener(
-        'focus',
-        handleWindowFocus
-      );
-
-      window.removeEventListener(
-        'popstate',
-        handleBackNavigation
-      );
-
-      audio.removeEventListener(
-        'canplay',
-        handleCanPlay
-      );
-
-      audio.removeEventListener(
-        'playing',
-        handleAudioPlaying
-      );
-
-      audio.removeEventListener(
-        'pause',
-        handleAudioPause
-      );
-
-      audio.removeEventListener(
-        'error',
-        handleAudioError
-      );
+      audio.removeEventListener('playing', handlePlaying);
+      audio.removeEventListener('pause', handlePause);
+      audio.removeEventListener('canplay', handleCanPlay);
 
       audio.pause();
       audio.removeAttribute('src');
       audio.load();
-
       audioRef.current = null;
-      isPlayingRef.current = false;
-      isStartingRef.current = false;
     };
   }, []);
 
-  // Invisible background player; no UI is rendered.
-  return null;
+  const togglePlayback = () => {
+    if (!audioRef.current) return;
+    if (isPlaying) {
+      shouldPlayRef.current = false;
+      audioRef.current.pause();
+      setIsPlaying(false);
+      window.dispatchEvent(
+        new CustomEvent('lead-jingle-state', { detail: { isPlaying: false } })
+      );
+    } else {
+      shouldPlayRef.current = true;
+      audioRef.current.play().then(() => {
+        setIsPlaying(true);
+        window.dispatchEvent(
+          new CustomEvent('lead-jingle-state', { detail: { isPlaying: true } })
+        );
+      }).catch(() => {
+        setIsPlaying(false);
+      });
+    }
+  };
+
+  return (
+    <aside
+      aria-label="Campaign Jingle Player"
+      className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 transition-all duration-300"
+    >
+      <button
+        onClick={togglePlayback}
+        type="button"
+        className={`group flex items-center gap-2.5 px-3 sm:px-4 py-2 sm:py-2.5 rounded-full backdrop-blur-md shadow-2xl transition-all duration-300 cursor-pointer active:scale-95 border ${
+          isPlaying
+            ? 'bg-gradient-to-r from-[#2c0e04]/95 to-[#1a0802]/95 border-orange-500/60 shadow-orange-950/60 text-white'
+            : 'bg-gradient-to-r from-orange-600 via-amber-600 to-orange-500 border-amber-300/80 text-white shadow-orange-900/80 animate-pulse'
+        }`}
+        title={isPlaying ? 'Pause Campaign Jingle' : 'Play LEAD Campaign Jingle'}
+        aria-label={isPlaying ? 'Pause LEAD Campaign Jingle' : 'Play LEAD Campaign Jingle'}
+      >
+        {isPlaying ? (
+          <>
+            {/* Animated Equalizer Waves */}
+            <div className="flex items-end gap-0.5 h-3.5 w-3.5 shrink-0" aria-hidden="true">
+              <span className="w-0.5 bg-amber-400 rounded-full animate-pulse h-2.5" />
+              <span className="w-0.5 bg-orange-400 rounded-full animate-pulse h-3.5 delay-75" />
+              <span className="w-0.5 bg-amber-300 rounded-full animate-pulse h-2 delay-150" />
+            </div>
+
+            <span className="text-xs font-bold font-display uppercase tracking-wide hidden xs:inline">
+              LEAD Jingle
+            </span>
+
+            <div className="w-5 h-5 rounded-full bg-orange-500/30 flex items-center justify-center shrink-0">
+              <Pause className="w-3 h-3 text-amber-200 fill-amber-200" />
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+              <Play className="w-3.5 h-3.5 text-white fill-white translate-x-0.5" />
+            </div>
+
+            <div className="flex flex-col text-left">
+              <span className="text-xs font-black font-display uppercase tracking-wider leading-none">
+                Play Jingle 🎵
+              </span>
+              <span className="text-[9px] text-amber-100 font-medium mt-0.5 leading-none">
+                Official Campaign Song
+              </span>
+            </div>
+          </>
+        )}
+      </button>
+    </aside>
+  );
 };

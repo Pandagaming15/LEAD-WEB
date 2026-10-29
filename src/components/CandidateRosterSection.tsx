@@ -113,6 +113,8 @@ export const CandidateRosterSection: React.FC<CandidateRosterSectionProps> = ({
                     <img
                       src={candidate.photoUrl}
                       alt={candidate.name}
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-cover object-center transition duration-500 group-hover:scale-105 group-hover:brightness-105"
                     />
                   ) : (

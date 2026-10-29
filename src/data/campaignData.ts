@@ -56,7 +56,7 @@ export const CAMPAIGN_SETTINGS: CampaignSettings = {
   electionDate: "2026-11-20T08:00:00",
   votingPortalUrl: "#sample-ballot",
   
-  pubmatBannerSrc: "/assets/aistudio/Messenger_creation_1481687400577797_60971d88.jpeg",
+  pubmatBannerSrc: "/assets/pubmat-cover.jpg",
   jingleAudioSrc: "/assets/campaign-jingle.mp3",
   schoolLogoSrc: "/assets/school-logo-transparent.png",
   secLogoSrc: "/assets/sec-logo-transparent.png",
@@ -80,7 +80,7 @@ export const CANDIDATE_ROSTER: Candidate[] = [
     courseYear: "Student Leader · Executive Slate",
     tagline: "Illuminating Student Governance with Compassion, Vision, and Action",
     advocacy: "Student Rights, Open Governance & Campus Modernization",
-    photoUrl: "/assets/aistudio/vizagar_bbd26e64.JPG",
+    photoUrl: "/assets/candidates/vizagar.jpg",
     pubmatLocation: "Center Row (Focal Leader)",
   },
   {
@@ -93,7 +93,7 @@ export const CANDIDATE_ROSTER: Candidate[] = [
     courseYear: "Student Leader · Executive Slate",
     tagline: "Bridging Every Department, Championing Every Student Voice",
     advocacy: "Inter-College Unity & Student Organization Empowerment",
-    photoUrl: "/assets/aistudio/laroza_1aafc6c6.JPG",
+    photoUrl: "/assets/candidates/laroza.jpg",
     pubmatLocation: "Top Row (Executive Slate)",
   },
   {
@@ -106,7 +106,7 @@ export const CANDIDATE_ROSTER: Candidate[] = [
     courseYear: "Student Leader · Executive Slate",
     tagline: "Systematic Records, Prompt Transcripts, Transparent Communications",
     advocacy: "Digital Documentation & Open Records Access",
-    photoUrl: "/assets/aistudio/llame_54e9c915.JPG",
+    photoUrl: "/assets/candidates/llame.jpg",
     pubmatLocation: "Executive Core",
   },
   {
@@ -119,7 +119,7 @@ export const CANDIDATE_ROSTER: Candidate[] = [
     courseYear: "Student Leader · Executive Slate",
     tagline: "Every Piso Accounted, Every Fund Maximized for the Student Body",
     advocacy: "Fiscal Transparency & Student Emergency Support",
-    photoUrl: "/assets/aistudio/patotoy_7995c918.JPG",
+    photoUrl: "/assets/candidates/patotoy.jpg",
     pubmatLocation: "Executive Core",
   },
   {
@@ -132,7 +132,7 @@ export const CANDIDATE_ROSTER: Candidate[] = [
     courseYear: "Student Leader · Executive Slate",
     tagline: "Uncompromising Integrity, Diligent Scrutiny, Honest Service",
     advocacy: "Checks and Balances in Student Governance",
-    photoUrl: "/assets/aistudio/cabile_53f36087.JPG",
+    photoUrl: "/assets/candidates/cabile.jpg",
     pubmatLocation: "Executive Core",
   },
 
@@ -147,7 +147,7 @@ export const CANDIDATE_ROSTER: Candidate[] = [
     courseYear: "Student Councilor Slate",
     tagline: "Action-Driven Service, Tireless Dedication for All Students",
     advocacy: "Campus Facilities & Student Services Improvement",
-    photoUrl: "/assets/aistudio/gunio_3569f146.JPG",
+    photoUrl: "/assets/candidates/gunio.jpg",
     pubmatLocation: "Councilor Slate",
   },
   {
@@ -160,7 +160,7 @@ export const CANDIDATE_ROSTER: Candidate[] = [
     courseYear: "Student Councilor Slate",
     tagline: "A Voice That Listens, Hands That Work, Leadership That Cares",
     advocacy: "Student Welfare & Organization Collaboration",
-    photoUrl: "/assets/aistudio/alkuino_cb09287a.JPG",
+    photoUrl: "/assets/candidates/alkuino.jpg",
     pubmatLocation: "Councilor Slate",
   },
   {
@@ -173,7 +173,7 @@ export const CANDIDATE_ROSTER: Candidate[] = [
     courseYear: "Student Councilor Slate",
     tagline: "Empowering Creative Potential, Championing Student Inclusivity",
     advocacy: "Arts, Culture & Gender-Inclusive Safe Spaces",
-    photoUrl: "/assets/aistudio/atienza_d763134a.JPG",
+    photoUrl: "/assets/candidates/atienza.jpg",
     pubmatLocation: "Councilor Slate",
   },
   {
@@ -186,7 +186,7 @@ export const CANDIDATE_ROSTER: Candidate[] = [
     courseYear: "Student Councilor Slate",
     tagline: "Genuine Dedication to Academic Excellence and Student Rights",
     advocacy: "Academic Freedom, Fair Grading Appeals & Student Handbooks",
-    photoUrl: "/assets/aistudio/glorioso_c63a47db.JPG",
+    photoUrl: "/assets/candidates/glorioso.jpg",
     pubmatLocation: "Councilor Slate",
   },
   {
@@ -199,7 +199,7 @@ export const CANDIDATE_ROSTER: Candidate[] = [
     courseYear: "Student Councilor Slate",
     tagline: "Leading with Energy, Uniting Students in Positive Action",
     advocacy: "Sports Development, Intramurals & Healthy Campus Lifestyles",
-    photoUrl: "/assets/aistudio/roqueza_a4292900.JPG",
+    photoUrl: "/assets/candidates/roqueza.jpg",
     pubmatLocation: "Councilor Slate",
   },
   {
@@ -212,7 +212,7 @@ export const CANDIDATE_ROSTER: Candidate[] = [
     courseYear: "Student Councilor Slate",
     tagline: "Building Bridges, Fostering Innovation in Student Projects",
     advocacy: "Technology, Innovation & Student Entrepreneurship",
-    photoUrl: "/assets/aistudio/lustares_ebd1e1ae.JPG",
+    photoUrl: "/assets/candidates/lustares.jpg",
     pubmatLocation: "Councilor Slate",
   },
   {
@@ -225,7 +225,7 @@ export const CANDIDATE_ROSTER: Candidate[] = [
     courseYear: "Student Councilor Slate",
     tagline: "Dedicated Heart for Community Outreach and Student Unity",
     advocacy: "Community Outreaches, Civic Engagement & Environmental Drives",
-    photoUrl: "/assets/aistudio/aragon_b31225e2.JPG",
+    photoUrl: "/assets/candidates/aragon.jpg",
     pubmatLocation: "Councilor Slate",
   },
 
@@ -240,7 +240,7 @@ export const CANDIDATE_ROSTER: Candidate[] = [
     courseYear: "1st Year Council Representative",
     tagline: "Guiding Freshmen with Care, Welcoming the Future of Our College",
     advocacy: "Freshman Onboarding & Campus Integration",
-    photoUrl: "/assets/aistudio/tuazon_cbab3feb.JPG",
+    photoUrl: "/assets/candidates/tuazon.jpg",
     pubmatLocation: "Representative Row",
   },
   {
@@ -253,7 +253,7 @@ export const CANDIDATE_ROSTER: Candidate[] = [
     courseYear: "2nd Year Council Representative",
     tagline: "Strengthening Sophomore Bonds, Elevating Student Potential",
     advocacy: "Sophomore Academic Support & Career Roadmaps",
-    photoUrl: "/assets/aistudio/de_aro_6d70efa2.JPG",
+    photoUrl: "/assets/candidates/de_aro.jpg",
     pubmatLocation: "Representative Row",
   },
   {
@@ -266,7 +266,7 @@ export const CANDIDATE_ROSTER: Candidate[] = [
     courseYear: "3rd Year Council Representative",
     tagline: "Paving the Way for Practicum Success and Solid Preparation",
     advocacy: "Pre-OJT Readiness, Internships & Industry Partnerships",
-    photoUrl: "/assets/aistudio/thomas_b3901431.JPG",
+    photoUrl: "/assets/candidates/thomas.jpg",
     pubmatLocation: "Representative Row",
   },
   {
@@ -279,7 +279,7 @@ export const CANDIDATE_ROSTER: Candidate[] = [
     courseYear: "4th Year Council Representative",
     tagline: "Championing Graduating Seniors Towards Career and Board Exam Triumph",
     advocacy: "Graduation Clearances, Board Exam Support & Career Expos",
-    photoUrl: "/assets/aistudio/vista_25546854.JPG",
+    photoUrl: "/assets/candidates/vista.jpg",
     pubmatLocation: "Representative Row",
   }
 ];

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Vote, Menu, X } from 'lucide-react';
+import { Vote, Menu, X, Music2 } from 'lucide-react';
 import { CAMPAIGN_SETTINGS } from '../data/campaignData';
 
 interface HeaderProps {
@@ -49,6 +49,18 @@ export const Header: React.FC<HeaderProps> = ({ onOpenBallotModal }) => {
 
           {/* Zone 3: Primary Action & Mobile Menu Toggle */}
           <div className="flex items-center gap-2 shrink-0">
+            {/* Quick Jingle Audio Toggle */}
+            <button
+              onClick={() => window.dispatchEvent(new CustomEvent('lead-jingle-toggle'))}
+              type="button"
+              className="p-2 sm:px-3 sm:py-2 rounded-xl bg-[#290d04] hover:bg-[#3d1406] text-amber-300 hover:text-white border border-orange-600/40 transition flex items-center gap-1.5 text-xs font-bold cursor-pointer active:scale-95 shadow-sm"
+              title="Toggle LEAD Campaign Jingle"
+              aria-label="Toggle LEAD Campaign Jingle"
+            >
+              <Music2 className="w-4 h-4 text-amber-400 animate-pulse" />
+              <span className="hidden lg:inline text-[11px]">Jingle</span>
+            </button>
+
             <button
               onClick={onOpenBallotModal}
               className="inline-flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-red-600 via-orange-600 to-orange-500 hover:from-red-500 hover:to-orange-400 rounded-xl shadow-lg shadow-orange-950/60 transition active:scale-95 cursor-pointer whitespace-nowrap"
